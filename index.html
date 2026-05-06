@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RSK's Brutalistic Simplicity</title>
+    <!-- THE STYLE: This makes the dark mode work -->
+    <style>
+    /* This kills the white edges */
+    html, body {
+        margin: 0;
+        padding: 10px; /* Adds a little breathing room for text, but keeps the color consistent */
+        min-height: 100vh;
+    }
+
+    /* The Dark Mode Logic */
+    .dark-mode {
+        filter: invert(1) hue-rotate(180deg);
+        background-color: #000;
+    }
+
+    /* Standard look */
+    body { 
+        background-color: #fff; 
+        color: #000; 
+        font-family: sans-serif; 
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>RSK's Brutalistic Simplicity Website!!!!</h1>
+    <button id="dark-mode-toggle" style="cursor: pointer; font-weight: bold; padding: 10px;"> 
+        DARK MODE!!! (Click me!) 
+    </button> 
+    
+    <p>This website exists because bloat is a sin. I promise you that this website has no CSS, no tracking and no nonsense.<br><br>
+    This website also exists as a "screw you" to ILL! Screw you ILL! Minimalism Rocks!! Go Libya yourself!!</p>
+    <p>Last Edited: 6 May 2026!</p>
+</header>
+
+<hr />
+
+<section>
+    <h2>How make? + Features</h2>
+    <p>It is made via <a href="https://coderspace.io/en/tools/html-editor/">this handy tool</a> !!!! You should try it, ATCCians!</p>
+</section>
+
+<hr />
+
+<section>
+    <h2>Live Transcriber (send your beautiful ESL voice to Klaus Schwab)</h2>
+    <p>Click the button below and start speaking! Your browser will convert your voice to text locally!! I added this because transcribing stuff is so cool.</p>
+    
+    <button id="start-btn">START LISTENING</button> 
+    <button id="stop-btn" disabled>STOP</button>
+    
+    <div style="margin-top: 10px;">
+        <strong>Output:</strong>
+        <p id="transcript-result" style="border: 1px solid #000; padding: 10px;">
+            <em>Waiting for voice input...</em>
+        </p>
+    </div>
+</section>
+
+<!-- THE LOGIC: This makes the buttons actually DO things -->
+<script>
+    // --- DARK MODE LOGIC ---
+    const toggleBtn = document.getElementById('dark-mode-toggle');
+    toggleBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark-mode');
+    });
+
+    // --- TRANSCRIBER LOGIC ---
+    const startBtn = document.getElementById('start-btn');
+    const stopBtn = document.getElementById('stop-btn');
+    const resultDisplay = document.getElementById('transcript-result');
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        recognition.onstart = () => {
+            resultDisplay.textContent = "Listening...";
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+        };
+
+        recognition.onresult = (event) => {
+            let text = "";
+            for (let i = 0; i < event.results.length; i++) {
+                text += event.results[i][0].transcript;
+            }
+            resultDisplay.textContent = text;
+        };
+
+        startBtn.onclick = () => recognition.start();
+        stopBtn.onclick = () => recognition.stop();
+        
+        recognition.onend = () => {
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        };
+    } else {
+        resultDisplay.textContent = "Your browser is too old or doesn't support voice!";
+    }
+</script>
+
+</body>
+</html>
